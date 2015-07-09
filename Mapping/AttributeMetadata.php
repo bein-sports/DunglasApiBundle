@@ -249,7 +249,8 @@ class AttributeMetadata implements AttributeMetadataInterface
             'readable',
             'writable',
             'required',
-            'link',
+            'normalizationLink',
+            'denormalizationLink',
             'iri',
         ];
     }
