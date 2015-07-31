@@ -82,7 +82,7 @@ class ResourceController extends Controller
         array $additionalContext = []
     ) {
         return new Response(
-            $this->get('serializer')->normalize(
+            $this->get('api.serializer')->normalize(
                 $data, 'json-ld', $resource->getNormalizationContext() + $additionalContext
             ),
             $status,
@@ -97,7 +97,7 @@ class ResourceController extends Controller
      */
     protected function getErrorResponse(ConstraintViolationListInterface $violations)
     {
-        return new Response($this->get('serializer')->normalize($violations, 'hydra-error'), 400);
+        return new Response($this->get('api.serializer')->normalize($violations, 'hydra-error'), 400);
     }
 
     /**
@@ -165,7 +165,7 @@ class ResourceController extends Controller
     {
         $resource = $this->getResource($request);
         try {
-            $object = $this->get('serializer')->deserialize(
+            $object = $this->get('api.serializer')->deserialize(
                 $request->getContent(),
                 $resource->getEntityClass(),
                 'json-ld',
@@ -228,7 +228,7 @@ class ResourceController extends Controller
         $context['object_to_populate'] = $object;
 
         try {
-            $object = $this->get('serializer')->deserialize(
+            $object = $this->get('api.serializer')->deserialize(
                 $request->getContent(),
                 $resource->getEntityClass(),
                 'json-ld',
