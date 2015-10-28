@@ -29,10 +29,15 @@ class RequestExceptionListener
      * @var NormalizerInterface
      */
     private $normalizer;
+    /**
+     * @var string
+     */
+    private $env;
 
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, $env)
     {
         $this->normalizer = $normalizer;
+        $this->env = $env;
     }
 
     /**
@@ -56,6 +61,10 @@ class RequestExceptionListener
         } else {
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
             $headers = [];
+        }
+
+        if ($exception instanceof DBALException && $this->env === 'prod') {
+            $exception = new DBALException("An exception occurred");
         }
 
         // Normalize exceptions with hydra errors only for resources
